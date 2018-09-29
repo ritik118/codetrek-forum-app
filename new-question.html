@@ -5,6 +5,8 @@
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
 
+
+
 </head>
 	<body>
 		
@@ -40,14 +42,14 @@
   <h3>Ask Question</h3>
 </div>
 <div class="container border">
-<form>
+<form action="answers.html" method="POST">
   <div class="form-group mt-4">
     <label for="title"><strong>Title</strong><sup style="color: red;">*</sup></label>
-    <input type="text" class="form-control" placeholder="Enter a short and proper title for your question">
+    <input type="text" class="form-control" id="titleq" placeholder="Enter a short and proper title for your question">
   </div>
   <div class="form-group">
     <label for="description"><strong>Description</strong><sup style="color: red;">*</sup></label>
-    <textarea class="form-control"placeholder="Enter a detailed description of what problems you're facing and steps to replicate" rows="10"style="resize: none;"></textarea>
+    <textarea class="form-control" id="descriptionq" placeholder="Enter a detailed description of what problems you're facing and steps to replicate" rows="10"style="resize: none;"></textarea>
   </div>
   <div class="form-group">
     <label for="Tags"><strong>Add Tags</strong></label>
@@ -55,7 +57,7 @@
     <small id="emailHelp" class="form-text text-muted">Tags will help to find your question faster.Add comma seprated tags.For ex:codetrek,bootstrap,frontend</small>
   </div>
   <br>
-  <button type="submit" class="btn btn-primary">Post Your Question</button>
+  <button type="button" class="btn btn-primary" onclick="showAlert()">Post Your Question</button>
 </form>
 </div>
 <footer class="my-4 py-2 text-center"style="color: #5495ff; font-size: 14px; background-color:rgb(250,250,250);">
@@ -64,6 +66,7 @@
     Developed at Codetrek Tehri 2018
   </strong>
   </footer>
+  <script src=assets/js/main.js></script>
 </body>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
