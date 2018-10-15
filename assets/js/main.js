@@ -13,7 +13,7 @@ function showAlert() {
 		alert("provide suitable description");
 	}
 	else {
-		confirm("Are you sure you want to jump to answers page");
+		
 	}
 	
 }
