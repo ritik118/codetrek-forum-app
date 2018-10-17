@@ -82,9 +82,9 @@ if ($conn->connect_error) {
         <p style='font-size:18px;color:grey;font-family:fontawesome;' class='mt-3'><?php echo $row["Description"]?><br>
         		<?php $badge=$row["Tags"];
         		$b=explode(",",$badge);
-        		foreach ($b as $value){
-        echo "<span class='badge badge-primary'>$value</span> &nbsp";
-    		}?>
+        		foreach ($b as $value){?>
+        <a href="tag.php?tag=<?php echo $value ?>"><span class='badge badge-primary'><?php echo $value ?></span></a> &nbsp";
+    		<?php } ?>
     	</p>
         <p> <a href =''>Ritik Kumar</a>    asked on September 27,2018</p>
        <p>
@@ -112,9 +112,9 @@ else{
         <p style='font-size:18px;color:grey;font-family:fontawesome;' class='mt-3'><?php echo $row["Description"]?><br>
         	<?php	$badge=$row["Tags"];
         		$b=explode(",",$badge);
-        		foreach ($b as $value){
-        echo "<span class='badge badge-primary'>$value</span> &nbsp";
-    		}?>
+        		foreach ($b as $value){ ?>
+        <a href="tag.php?tag=<?php echo $value ?>"><span class='badge badge-primary'><?php echo $value ?></span> &nbsp</a>
+    		<?php } ?>
     	</p>
         <p> <a href =''>Ritik Kumar</a>    asked on September 27,2018</p>
        <p>

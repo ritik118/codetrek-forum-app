@@ -1,3 +1,22 @@
+<?php
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "codetrek-forum";
+
+
+// Create connection
+$conn =mysqli_connect($servername, $username, $password,$dbname);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+} 
+$tag=$_GET['tag'];
+
+?>
+
+
 <html>
 <head>
 	<title> Codetrek</title>
@@ -39,7 +58,7 @@
 </nav>
 
 <div class="container" style="margin-top: 50px; overflow: auto;">
-  <h3 style="float: left;">Showing Questions for <span class="badge badge-info">git</span></h3>
+  <h3 style="float: left;">Showing Questions for <span class="badge badge-info"><?php echo $tag ?></span></h3>
   
   <form class="form-inline my-2 my-lg-0 float-right" action="new-question.html" method="POST">
     
@@ -57,13 +76,30 @@
 <div class="container ">
  <a href=""><i class="fas fa-times-circle text-secondary"></i></a><span class="text-secondary">clear filters</span>
 </div>
+<?php 
+$sql="SELECT * FROM questions WHERE Tags LIKE '%$tag%'";
+$result=mysqli_query($conn,$sql);
+if($result){
+  while($row=mysqli_fetch_assoc($result)){
 
+?>
 <div class="container border" style="margin-top: 20px;">
-    <h2 class="mt-2"> How do I use Git or Github?</h2>
-      <p style="font-size:18px;font-family:fontawesome;color: grey;"> A paragraph (from the Ancient Greek παράγραφος paragraphos, "to write beside" or "written beside") is a self-contained unit of a discourse in writing dealing with a particular point or idea. A paragraph consists of one or more sentences....<br>
-      <span class="badge badge-info">git</span>
-      <span class="badge  badge-secondary">github</span>
-      <span class="badge  badge-secondary">vcs</span>
+    <h2 class="mt-2"> <?php echo $row['Title'] ?></h2>
+      <p style="font-size:18px;font-family:fontawesome;color: grey;"> 
+        <?php echo $row['Description']; ?>
+        <br>
+      <?php $badge=$row["Tags"];
+            $b=explode(",",$badge);
+            foreach ($b as $value){
+              if($value==$tag){
+     echo"  <a href='tag.php?tag=$value'><span class='badge badge-primary'> $value</span></a> &nbsp";
+      }
+     else{
+      echo " <a href='tag.php?tag=$value'><span class='badge badge-secondary'> $value</span></a> &nbsp";
+     }
+        }
+        ?>
+      
       </p>
       <p> <a href="#">Ritik Kumar</a>    asked on September 27,2018</p>
       <p>
@@ -77,47 +113,10 @@
         10 answers</span>
       </p>
   </div>
-
-  <div class="container border" style="margin-top: 20px;">
-    <h2 class="mt-2"> How do I use Git or Github?</h2>
-      <p style="font-size:18px;font-family:fontawesome;color: grey;"> A paragraph (from the Ancient Greek παράγραφος paragraphos, "to write beside" or "written beside") is a self-contained unit of a discourse in writing dealing with a particular point or idea. A paragraph consists of one or more sentences....<br>
-        <span class="badge  badge-secondary">github</span>
-      <span class="badge badge-info">git</span>
-      <span class="badge  badge-secondary">vcs</span>
-      </p>
-      <p> <a href="#">Ritik Kumar</a>    asked on September 27,2018</p>
-      <p>
-        
-        <span><i class="far fa-thumbs-up"></i>
-        14</span> &nbsp &nbsp
-    
-        <span><i class="far fa-thumbs-down"></i>
-        2 </span>&nbsp &nbsp
-        <span><i class="far fa-comments"></i>
-        10 answers</span>
-      </p>
-  </div>
-
-  <div class="container border" style="margin-top: 20px;">
-    <h2 class="mt-2"> How to upload code in github?</h2>
-      <p style="font-size:18px;font-family:fontawesome;color: grey;"> A paragraph (from the Ancient Greek παράγραφος paragraphos, "to write beside" or "written beside") is a self-contained unit of a discourse in writing dealing with a particular point or idea. A paragraph consists of one or more sentences....<br>
-      <span class="badge  badge-secondary">vcs</span>
-      <span class="badge  badge-secondary">github</span>
-      <span class="badge badge-info">git</span>
-      </p>
-      <p> <a href="#">Ritik Kumar</a>    asked on September 27,2018</p>
-      <p>
-        
-        <span><i class="far fa-thumbs-up"></i>
-        14</span> &nbsp &nbsp
-    
-        <span><i class="far fa-thumbs-down"></i>
-        2 </span>&nbsp &nbsp
-        <span><i class="far fa-comments"></i>
-        10 answers</span>
-      </p>
-  </div>
-
+<?php 
+}
+}
+?>
 <footer class="my-2 text-center"style="color: #5495ff; font-size: 14px; background-color:rgb(250,250,250);">
     
     <i class="fas fa-code"></i>

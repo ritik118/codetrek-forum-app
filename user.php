@@ -19,7 +19,7 @@
   <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
     <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
       <li class="nav-item active">
-        <a class="nav-link" href="#"style="color: grey;">Questions <span class="sr-only">(current)</span></a>
+        <a class="nav-link" href="new-question.php"style="color: grey;">Questions <span class="sr-only">(current)</span></a>
       </li>
       </ul>
       <li class="nav-item dropdown"style="list-style-type: none;">
