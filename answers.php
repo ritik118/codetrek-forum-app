@@ -34,7 +34,9 @@ if ($result2) {
 else{
   $answer="";
 }
-
+  $sql3="SELECT * FROM answers where question_id=$search";
+      $result3=mysqli_query($conn,$sql3);
+      
 
 ?>
 
@@ -78,7 +80,11 @@ else{
    
   </div>
 </nav>
-
+<?php if(isset($_POST['answer'])){ ?>
+<div class="alert alert-success" role="alert">
+  <strong>Thank you!</strong> Your answer has been successfully posted!!
+</div>
+<?php } ?>
 <div class="container" style="margin-top: 40px;">
     <h3><?php echo $row1["Title"]; ?></h3>
       <p style="font-size:18px;font-family:fontawesome;color: grey;"><?php echo $row1['Description']; ?><br>
@@ -95,13 +101,11 @@ else{
         <i class="far fa-thumbs-down" id="dislikes" onclick="dislike()"><span id="dclicks">2</span></i>
         &nbsp &nbsp
         <i class="far fa-comments"></i>
-        10 answers
+        <?php echo mysqli_num_rows($result3); ?> answers
       </p>
   </div>
   <?php
-      $sql3="SELECT * FROM answers where question_id=$search";
-      $result3=mysqli_query($conn,$sql3);
-      while($row=mysqli_fetch_assoc($result3)){
+    while($row=mysqli_fetch_assoc($result3)){
      ?>
   <div class="container border shadow-sm  bg-white rounded"style="margin-top: 40px;">
     <p class="mt-4"style="font-family:fontawesome;color: grey;"> <a href="#">Ritik Kumar</a>  answered on September 27,2018
