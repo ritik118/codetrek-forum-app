@@ -1,3 +1,45 @@
+<?php
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "codetrek-forum";
+
+$search=$_GET['title'];
+// Create connection
+$conn =mysqli_connect($servername, $username, $password,$dbname);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+} 
+$sql1="select * from questions where id = '$search'";
+$result1=mysqli_query($conn,$sql1);
+$row1 = mysqli_fetch_assoc($result1);
+if ($result1) {
+  
+} else {
+    echo "Error: " . $sql1 . "<br>" . mysqli_error($conn);
+}
+
+if(isset($_POST['answer'])){
+  $answer=$_POST['answer'];
+  $sql2="INSERT INTO answers(question_id,answer_text,created_at,updated_at) values($search,'$answer',NOW(),NOW())";
+$result2=mysqli_query($conn,$sql2);
+if ($result2) {
+  
+} else {
+    echo "Error: " . $sql2 . "<br>" . mysqli_error($conn);
+}
+}
+else{
+  $answer="";
+}
+
+
+?>
+
+
+
 <html>
 <head>
 	<title> Codetrek</title>
@@ -11,7 +53,7 @@
 		
 
 <nav class="navbar navbar-expand-lg navbar-light bg-dark">
-  <a class="navbar-brand" href="#"style="color: white; margin-left: 90px;">CODETREK FORUM</a>
+  <a class="navbar-brand" href="index.php"style="color: white; margin-left: 90px;">CODETREK FORUM</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -38,11 +80,13 @@
 </nav>
 
 <div class="container" style="margin-top: 40px;">
-    <h3> How do I use Git and Github?</h3>
-      <p style="font-size:18px;font-family:fontawesome;color: grey;">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.<br>
-      <span class="badge badge-info">git</span>
-      <span class="badge badge-info">github</span>
-      <span class="badge badge-info">vcs</span>
+    <h3><?php echo $row1["Title"]; ?></h3>
+      <p style="font-size:18px;font-family:fontawesome;color: grey;"><?php echo $row1['Description']; ?><br>
+      <?php $badge=$row1["Tags"];
+            $b=explode(",",$badge);
+            foreach ($b as $value){
+        echo "<span class='badge badge-primary'>$value</span> &nbsp";
+        }?>
       </p>
       <p> <a href="#">Ritik Kumar</a>    asked on September 27,2018</p>
       <p>
@@ -54,28 +98,27 @@
         10 answers
       </p>
   </div>
+  <?php
+      $sql3="SELECT * FROM answers where question_id=$search";
+      $result3=mysqli_query($conn,$sql3);
+      while($row=mysqli_fetch_assoc($result3)){
+     ?>
   <div class="container border shadow-sm  bg-white rounded"style="margin-top: 40px;">
     <p class="mt-4"style="font-family:fontawesome;color: grey;"> <a href="#">Ritik Kumar</a>  answered on September 27,2018
       <span class="badge badge-success float-lg-right"><i class="fas fa-check"></i> Correct Answer</span>
     </p>  
-      <p style="font-size:14px;font-family:arial;font-weight:540;"> Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-      </p>
-  </div>
-  <div class="container border shadow-sm  bg-white rounded"style="margin-top: 30px;">
-    <p class="mt-4"style="font-family:fontawesome;color: grey;"> <a href="#">Dilpreet Singh</a>  answered on September 27,2018
-      <span class="badge badge-success float-lg-right"><i class="fas fa-check"></i> Correct Answer</span>
-    </p>
-      <p style="font-size:14px;font-family:arial;font-weight:540;"> Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-      </p>
 
+      <p style="font-size:14px;font-family:arial;font-weight:540;"> <?php echo $row['answer_text']; ?>
+      </p>
   </div>
+  <?php } ?>
   <div class="container border shadow-sm  bg-white rounded"style="margin-top: 30px;">
     <h2 class="mt-4">Your answer</h2>
-      <form action="" method="">
+      <form action="answers.php?title=<?php echo $row1['id'] ?>" method="POST">
         <div class="form-group">
-    <textarea class="form-control" id="descriptionq" placeholder="Please provide with a suitable answer" rows="10"style="resize: none;"></textarea>
+    <textarea class="form-control" id="descriptionq" placeholder="Please provide with a suitable answer" name="answer" rows="10"style="resize: none;"></textarea>
   </div>
-  <button type="button" class="btn btn-primary"">Post Your Answer</button>
+  <button type="submit" class="btn btn-primary"">Post Your Answer</button>
       </form>
   </div>
   <footer class="my-4 py-2 text-center"style="color: #5495ff; font-size: 14px; background-color:rgb(250,250,250);">

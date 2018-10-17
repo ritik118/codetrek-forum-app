@@ -4,6 +4,7 @@ $username = "root";
 $password = "";
 $dbname = "codetrek-forum";
 
+
 // Create connection
 $conn =mysqli_connect($servername, $username, $password,$dbname);
 
@@ -54,51 +55,86 @@ if ($conn->connect_error) {
 
 <div class="container" style="margin-top: 50px; overflow: auto;">
 	<h2 style="float: left;">Questions</h2>
-	<form class="form-inline my-2 my-lg-0 float-right" action="new-question.html" method="POST">
+	<form class="form-inline my-2 my-lg-0 float-right" action="index.php" method="POST">
 		
-      <input class="form-control" type="search" placeholder="Search" aria-label="Search">
+      <input class="form-control" type="text" placeholder="Search" aria-label="Search" name="search">
       
-      <button class="btn btn-primary mr-2"style="padding:10px;"><i class="fas fa-search"></i></button>
-  
-      <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Ask Questions</button>
+      <button class="btn btn-primary mr-2"style="padding:10px;" type="submit"><i class="fas fa-search"></i></button>
+  	
+      <a class="btn btn-outline-primary my-2 my-sm-0" href="new-question.php">Ask Questions</a>
     </form>
 
 </div>
-
-	
 		<?php
-
+		
 		$sql="select * from questions";
 		$result=mysqli_query($conn,$sql);
 
 		if (mysqli_num_rows($result) > 0) {
     // output data of each row
+			if(isset($_POST['search'])){
+		$search= $_POST['search'];
+	
     while($row = mysqli_fetch_assoc($result)) {
-    	echo "<div class='container border' style='margin-top: 20px;'>";
-        echo "<h2 class='mt-2'>".$row["Title"]."</h2>";
-        echo "<p style='font-size:18px;color:grey;font-family:fontawesome;' class='mt-3'>".$row["Description"]."<br>";
-        		$badge=$row["Tags"];
+    		if (stripos($row['Title'],$search) !== false) {?>
+    	<div class='container border' style='margin-top: 20px;'>
+        <a href="answers.php?title=<?php echo $row['id']?>" style="color: black;"><h2 class='mt-2'><?php echo $row["Title"]?></h2></a>
+        <p style='font-size:18px;color:grey;font-family:fontawesome;' class='mt-3'><?php echo $row["Description"]?><br>
+        		<?php $badge=$row["Tags"];
         		$b=explode(",",$badge);
         		foreach ($b as $value){
         echo "<span class='badge badge-primary'>$value</span> &nbsp";
-    }
-    	echo "</p>";
-        echo "<p> <a href =''>Ritik Kumar</a>    asked on September 27,2018</p>";
-       echo " <p>
+    		}?>
+    	</p>
+        <p> <a href =''>Ritik Kumar</a>    asked on September 27,2018</p>
+       <p>
 				
 				<span><i class='far fa-thumbs-up'></i>
-				14</span> &nbsp &nbsp
+				<?php echo $row['likes']; ?></span> &nbsp &nbsp
 		
 				<span><i class='far fa-thumbs-down'></i>
-				2 </span>&nbsp &nbsp
+				<?php echo $row['dislikes']; ?> </span>&nbsp &nbsp
 				<span><i class='far fa-comments'></i>
 				10 answers</span>
 			</p>
 			</div>
-			";
+			
+		<?php } 
 
-    }
-} else {
+    
+}
+}
+else{
+	while($row = mysqli_fetch_assoc($result)) {
+    		?>
+    	<div class='container border' style='margin-top: 20px;'>
+        <a href="answers.php?title=<?php echo $row['id'] ?>" style="color: black;"><h2 class='mt-2'><?php echo $row["Title"]?></h2></a>
+        <p style='font-size:18px;color:grey;font-family:fontawesome;' class='mt-3'><?php echo $row["Description"]?><br>
+        	<?php	$badge=$row["Tags"];
+        		$b=explode(",",$badge);
+        		foreach ($b as $value){
+        echo "<span class='badge badge-primary'>$value</span> &nbsp";
+    		}?>
+    	</p>
+        <p> <a href =''>Ritik Kumar</a>    asked on September 27,2018</p>
+       <p>
+				
+				<span><i class='far fa-thumbs-up'></i><?php echo $row['likes']; ?>
+				</span> &nbsp &nbsp
+		
+				<span><i class='far fa-thumbs-down'></i>
+				<?php echo $row['dislikes']; ?> </span>&nbsp &nbsp
+				<span><i class='far fa-comments'></i>
+				10 answers</span>
+			</p>
+			</div>
+			
+<?php
+    
+}
+}
+}
+ else {
     echo "0 results";
 }
 		?>
